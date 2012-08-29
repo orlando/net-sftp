@@ -163,7 +163,7 @@ module Net; module SFTP; module Operations
         if @options[:create_dir]
           sftp.mkdir(remote) do |response|
             @active -= 1
-            raise StatusException.new(response, "mkdir `#{remote}'") unless response.code == 4
+            raise StatusException.new(response, "mkdir `#{remote}'") if response.code == 4
             (options[:requests] || RECURSIVE_READERS).to_i.times do
               break unless process_next_entry
             end
@@ -307,7 +307,7 @@ module Net; module SFTP; module Operations
       def on_mkdir(response)
         @active -= 1
         dir = response.request[:dir]
-        raise StatusException.new(response, "mkdir #{dir}") unless response.code == 4
+        raise StatusException.new(response, "mkdir #{dir}") if response.code == 4
 
         process_next_entry
       end
